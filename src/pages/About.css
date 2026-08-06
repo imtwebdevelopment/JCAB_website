@@ -1,0 +1,146 @@
+.about-hero {
+  padding: 6rem 0;
+  text-align: center;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.about-hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 1.5rem;
+}
+
+.about-hero p {
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-section {
+  padding: 8rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-text h2 {
+  font-size: 2.25rem;
+}
+
+.about-text p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.about-visual {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.about-visual svg {
+  height: 380px;
+  width: auto;
+}
+
+.about-cards-section {
+  padding: 8rem 0;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.about-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+@media (max-width: 992px) {
+  .about-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.about-card {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  padding: 3rem 2rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: var(--transition-smooth);
+}
+
+.about-card:hover {
+  border-color: var(--border-color-glow);
+  transform: translateY(-4px);
+}
+
+.about-card h3 {
+  font-size: 1.5rem;
+  color: var(--accent-gold);
+}
+
+.about-card p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.about-vision-mission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  padding: 8rem 0;
+}
+
+@media (max-width: 768px) {
+  .about-vision-mission {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.vision-mission-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 3rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+}
+
+.vision-mission-box h3 {
+  font-size: 1.75rem;
+  color: var(--accent-gold);
+}
+
+.vision-mission-box p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
