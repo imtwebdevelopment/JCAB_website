@@ -39,9 +39,15 @@
 }
 
 .logo-img {
-  height: 58px;
+  height: 75px;
   width: auto;
   object-fit: contain;
+  mix-blend-mode: screen; /* Makes the black background of the logo transparent */
+  transition: height 0.3s ease;
+}
+
+.header.scrolled .logo-img {
+  height: 48px;
 }
 
 /* ── Nav sides ── */
@@ -62,13 +68,13 @@
 .nav-menu {
   display: flex;
   align-items: center;
-  gap: 2.6rem;
+  gap: 3.0rem;
   list-style: none;
 }
 
 .nav-item {
   font-weight: 500;
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-secondary);
@@ -149,9 +155,11 @@
   .nav-menu {
     gap: 1.4rem;
   }
+
   .nav-left {
     padding-right: 1.8rem;
   }
+
   .nav-right {
     padding-left: 1.8rem;
   }
@@ -161,12 +169,15 @@
   .nav-menu {
     gap: 1rem;
   }
+
   .nav-item {
     font-size: 0.75rem;
   }
+
   .nav-left {
     padding-right: 1.2rem;
   }
+
   .nav-right {
     padding-left: 1.2rem;
   }

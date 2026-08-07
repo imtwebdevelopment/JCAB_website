@@ -101,13 +101,12 @@ export default function BespokeBuilder() {
           transition={{ duration: 0.8 }}
           className="bb-hero-inner"
         >
-          <span className="section-label">Bespoke Poles</span>
+          <span className="section-label">Custom Architecture</span>
           <h1 className="bb-hero-title">
-            Our designs are inspired by<br />
-            <em>places, people, and the poetry of everyday life.</em>
+            Bespoke Lighting Poles
           </h1>
           <p className="bb-hero-sub">
-            Each pole is a collaboration between craft and culture — shaped by the stories of the spaces they illuminate.
+            Crafting unique identities for every space.
           </p>
         </motion.div>
       </section>

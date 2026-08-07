@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import About from './pages/About';
 import Manufacturing from './pages/Manufacturing';
+import Spaces from './pages/Spaces';
 import Products from './pages/Products';
 import BespokeBuilder from './pages/BespokeBuilder';
 import Contact from './pages/Contact';
@@ -45,9 +46,9 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/manufacturing" element={<Manufacturing />} />
+            <Route path="/spaces" element={<Spaces />} />
             <Route path="/products" element={<Products />} />
             <Route path="/bespoke-poles" element={<BespokeBuilder />} />
-            <Route path="/spaces" element={<ComingSoon title="Spaces" />} />
             <Route path="/blogs" element={<ComingSoon title="Blogs" />} />
             <Route path="/events" element={<ComingSoon title="Events" />} />
             <Route path="/contact" element={<Contact />} />

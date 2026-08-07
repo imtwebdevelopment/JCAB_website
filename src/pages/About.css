@@ -1,146 +1,248 @@
-.about-hero {
-  padding: 6rem 0;
-  text-align: center;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
-}
 
-.about-hero h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+
+/* Typography Overrides for Dinamoo Style */
+.dinamoo-heading {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
 }
 
-.about-hero p {
-  font-size: 1.25rem;
-  max-width: 800px;
-  margin: 0 auto;
+.dinamoo-subheading {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  line-height: 1.3;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
 }
 
-.about-section {
-  padding: 8rem 0;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: center;
-}
-
-@media (max-width: 992px) {
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-}
-
-.about-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.about-text h2 {
-  font-size: 2.25rem;
-}
-
-.about-text p {
+.dinamoo-text {
   font-size: 1.05rem;
-  line-height: 1.7;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
 }
 
-.about-visual {
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 4rem;
+/* Dinamoo Hero */
+.about-hero-d {
+  height: 100vh;
+  min-height: 600px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-height: 400px;
+  justify-content: center;
+  position: relative;
+  background-color: #000;
+  color: #fff;
+  overflow: hidden;
 }
 
-.about-visual svg {
-  height: 380px;
-  width: auto;
+.about-hero-d::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url('../assets/about_hero_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.6;
+  z-index: 1;
 }
 
-.about-cards-section {
-  padding: 8rem 0;
-  background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
+.about-hero-content-d {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 1000px;
+  padding: 0 2rem;
 }
 
-.about-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+.about-hero-content-d h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
-@media (max-width: 992px) {
-  .about-cards-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
+.about-hero-content-d p {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ccc;
 }
 
-.about-card {
+/* Section Spacing */
+.dinamoo-section {
+  padding: 120px 0;
   background-color: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  padding: 3rem 2rem;
-  border-radius: var(--radius-sm);
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  transition: var(--transition-smooth);
+  color: var(--text-primary);
+}
+.dinamoo-section h1,
+.dinamoo-section h2,
+.dinamoo-section h3 {
+  color: var(--text-primary);
 }
 
-.about-card:hover {
-  border-color: var(--border-color-glow);
-  transform: translateY(-4px);
+.dinamoo-section.dark {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
-
-.about-card h3 {
-  font-size: 1.5rem;
-  color: var(--accent-gold);
+.dinamoo-section.dark h1,
+.dinamoo-section.dark h2,
+.dinamoo-section.dark h3 {
+  color: var(--text-primary);
 }
-
-.about-card p {
-  font-size: 0.95rem;
+.dinamoo-section.dark .dinamoo-text {
   color: var(--text-secondary);
 }
 
-.about-vision-mission {
+/* Our Story Split */
+.story-grid-d {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  padding: 8rem 0;
+  gap: 80px;
+  align-items: stretch;
 }
 
-@media (max-width: 768px) {
-  .about-vision-mission {
+@media (max-width: 992px) {
+  .story-grid-d {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 40px;
   }
 }
 
-.vision-mission-box {
+.story-text-d {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 3rem;
+  justify-content: center;
+}
+
+.story-img-d {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Vision Mission Split */
+.vm-grid-d {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.vm-row-d {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+}
+.vm-row-d.reverse {
+  direction: rtl;
+}
+.vm-row-d.reverse > * {
+  direction: ltr;
+}
+
+@media (max-width: 992px) {
+  .vm-row-d {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+}
+
+.vm-content-d {
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-color: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
 }
 
-.vision-mission-box h3 {
-  font-size: 1.75rem;
-  color: var(--accent-gold);
+.vm-row-d.reverse .vm-content-d {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
-.vision-mission-box p {
+.vm-content-d h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.vm-row-d.reverse .vm-content-d h2 {
+  color: var(--text-primary);
+}
+
+.vm-content-d p {
   font-size: 1.05rem;
-  line-height: 1.7;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.vm-row-d.reverse .vm-content-d p {
+  color: var(--text-muted);
+}
+
+.vm-img-d {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cards / Advantages */
+.advantages-grid-d {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 60px;
+}
+
+@media (max-width: 992px) {
+  .advantages-grid-d {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adv-card-d {
+  padding: 50px 40px;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.dinamoo-section.dark .adv-card-d {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.adv-card-d:hover {
+  transform: translateY(-10px);
+  border-color: var(--accent-gold);
+}
+
+.adv-card-d h3 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.dinamoo-section.dark .adv-card-d h3 {
+  color: var(--text-primary);
+}
+
+.adv-card-d p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.dinamoo-section.dark .adv-card-d p {
+  color: var(--text-secondary);
 }

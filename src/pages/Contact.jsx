@@ -29,13 +29,15 @@ export default function Contact() {
 
   return (
     <div className="page-wrapper">
-      <div className="container contact-container">
-        {/* Hero */}
-        <div className="contact-hero">
-          <span className="section-label">Get In Touch</span>
+      {/* Hero */}
+      <div className="contact-hero">
+        <div className="contact-hero-inner">
           <h1 style={{ marginTop: '10px' }}>Contact Us</h1>
-          <p>Have a project in mind or need custom specifications? Connect with our team.</p>
+          <p>Let us help turn your vision into reality.</p>
         </div>
+      </div>
+
+      <div className="container contact-container">
 
         {/* Contact Grid */}
         <div className="contact-grid">

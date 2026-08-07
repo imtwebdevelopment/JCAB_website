@@ -14,9 +14,8 @@ const navLeft = [
 const navRight = [
   { to: '/bespoke-poles', label: 'Bespoke Poles' },
   { to: '/spaces', label: 'Spaces' },
-  { to: '/blogs', label: 'Blogs' },
-  { to: '/events', label: 'Events' },
   { to: '/contact', label: 'Contact Us' },
+  { to: '/contact', label: 'Enquiry', isButton: true },
 ];
 
 const allNav = [...navLeft, ...navRight];
@@ -41,7 +40,7 @@ export default function Header() {
         <nav className="nav-side nav-left">
           <ul className="nav-menu">
             {navLeft.map(({ to, label, end }) => (
-              <li key={to}>
+              <li key={label}>
                 <NavLink
                   to={to}
                   end={end}
@@ -62,14 +61,20 @@ export default function Header() {
         {/* Right nav links */}
         <nav className="nav-side nav-right">
           <ul className="nav-menu">
-            {navRight.map(({ to, label }) => (
-              <li key={to}>
-                <NavLink
-                  to={to}
-                  className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                >
-                  {label}
-                </NavLink>
+            {navRight.map(({ to, label, isButton }) => (
+              <li key={label}>
+                {isButton ? (
+                  <NavLink to={to} className="btn-primary" style={{ padding: '0.6rem 1.2rem', fontSize: '0.8rem', marginLeft: '0.5rem' }}>
+                    {label}
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    to={to}
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                  >
+                    {label}
+                  </NavLink>
+                )}
               </li>
             ))}
           </ul>
@@ -88,16 +93,27 @@ export default function Header() {
       {/* Mobile slide-in nav */}
       <nav className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <ul>
-          {allNav.map(({ to, label, end }) => (
-            <li key={to}>
-              <NavLink
-                to={to}
-                end={end}
-                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                onClick={closeMobileMenu}
-              >
-                {label}
-              </NavLink>
+          {allNav.map(({ to, label, end, isButton }) => (
+            <li key={label}>
+              {isButton ? (
+                <NavLink
+                  to={to}
+                  className="btn-primary"
+                  onClick={closeMobileMenu}
+                  style={{ display: 'inline-flex', marginTop: '1rem' }}
+                >
+                  {label}
+                </NavLink>
+              ) : (
+                <NavLink
+                  to={to}
+                  end={end}
+                  className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                  onClick={closeMobileMenu}
+                >
+                  {label}
+                </NavLink>
+              )}
             </li>
           ))}
         </ul>

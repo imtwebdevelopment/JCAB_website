@@ -6,7 +6,8 @@
 
 /* ── Hero ── */
 .bb-hero {
-  min-height: 70vh;
+  height: 100vh;
+  min-height: 600px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,8 +22,12 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 60%, rgba(197, 168, 128, 0.05) 0%, transparent 70%);
-  pointer-events: none;
+  background-image: url('../assets/bespoke_hero.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.35;
+  z-index: 1;
 }
 
 .bb-hero-inner {
@@ -93,7 +98,7 @@
   direction: rtl;
 }
 
-.bb-card--reverse > * {
+.bb-card--reverse>* {
   direction: ltr;
 }
 
@@ -170,12 +175,15 @@
     grid-template-columns: 1fr;
     min-height: unset;
   }
+
   .bb-card--reverse {
     direction: ltr;
   }
+
   .bb-card-img-wrap {
     height: 320px;
   }
+
   .bb-card-body {
     padding: 3rem 2rem;
   }
@@ -324,11 +332,23 @@
   margin-top: 0.25rem;
 }
 
-/* ── CTA Banner ── */
 .bb-cta-banner {
   padding: 8rem 0;
-  background: linear-gradient(160deg, #0d0c0e 0%, #111113 100%);
+  background-image: url('../assets/bespoke_contact.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   border-top: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.bb-cta-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1;
 }
 
 .bb-cta-inner {
@@ -339,6 +359,8 @@
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
+  position: relative;
+  z-index: 2;
 }
 
 .bb-cta-inner h2 {
