@@ -88,7 +88,7 @@ export default function Products() {
     const matchCat = activeCategory === 'all' || p.cat === activeCategory;
     const matchSubcat = activeSubcategory === 'all' || p.subcat === activeSubcategory;
     return matchCat && matchSubcat;
-  }).slice(0, 3); // Limit to 3 products as requested
+  });
 
   const openDetails = (prod) => {
     setSelectedProduct(prod);
