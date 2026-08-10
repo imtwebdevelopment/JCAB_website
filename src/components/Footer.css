@@ -34,10 +34,11 @@
 }
 
 .footer-logo {
-  height: 45px;
+  height: 120px;
   width: auto;
   object-fit: contain;
   align-self: flex-start;
+  mix-blend-mode: screen;
 }
 
 .footer-brand p {
@@ -124,8 +125,8 @@
   letter-spacing: 0.05em;
 }
 
-.contact-block p, .contact-block a {
-  font-size: 0.9rem;
+.contact-block p, .contact-block h6 {
+  font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.5;
 }

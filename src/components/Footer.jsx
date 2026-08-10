@@ -66,7 +66,7 @@ export default function Footer() {
             <h6>Contact Info</h6>
             <div className="footer-contact-info">
               <div className="contact-block">
-                <h7>Corporate Office & Factory</h7>
+                <h6>Corporate Office & Factory</h6>
                 <p>
                   Marudhar Electricals<br />
                   Ground Floor No 54 4th Main 4th Cross Near<br />
@@ -76,7 +76,7 @@ export default function Footer() {
                 </p>
               </div>
               <div className="contact-block">
-                <h7>Business Inquiries</h7>
+                <h6>Business Inquiries</h6>
                 <p>Contact: <a href="tel:+917204301107">+91 7204301107</a></p>
                 <p>E-Mail: <a href="mailto:marudharelectricals11@gmail.com">marudharelectricals11@gmail.com</a></p>
               </div>

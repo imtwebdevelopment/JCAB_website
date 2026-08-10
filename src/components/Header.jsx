@@ -23,6 +23,12 @@ const allNav = [...navLeft, ...navRight];
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [productsHover, setProductsHover] = useState(false);
+  const [activeCategoryHover, setActiveCategoryHover] = useState(null);
+
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -30,7 +36,32 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [catRes, subRes] = await Promise.all([
+          fetch(`${API_URL}/api/categories`),
+          fetch(`${API_URL}/api/subcategories`)
+        ]);
+        const catData = await catRes.json();
+        const subData = await subRes.json();
+        setCategories(catData);
+        setSubcategories(subData);
+      } catch (error) {
+        console.error('Error fetching categories for header:', error);
+      }
+    };
+    fetchData();
+  }, [API_URL]);
+
   const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  // Helper to get subs for a cat
+  const getSubcategories = (catId) => {
+    return subcategories.filter(sub => 
+      (sub.parentCategory?._id || sub.parentCategory) === catId
+    );
+  };
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
@@ -39,17 +70,68 @@ export default function Header() {
         {/* Left nav links */}
         <nav className="nav-side nav-left">
           <ul className="nav-menu">
-            {navLeft.map(({ to, label, end }) => (
-              <li key={label}>
-                <NavLink
-                  to={to}
-                  end={end}
-                  className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                >
-                  {label}
-                </NavLink>
-              </li>
-            ))}
+            {navLeft.map(({ to, label, end }) => {
+              if (label === 'Products') {
+                return (
+                  <li 
+                    key={label} 
+                    className="nav-item-wrapper dropdown-wrapper"
+                    onMouseEnter={() => setProductsHover(true)}
+                    onMouseLeave={() => { setProductsHover(false); setActiveCategoryHover(null); }}
+                  >
+                    <NavLink to={to} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                      {label}
+                    </NavLink>
+                    <div className={`dropdown-menu ${productsHover ? 'show' : ''}`}>
+                      <ul className="dropdown-list">
+                        {categories.map(cat => {
+                          const subs = getSubcategories(cat._id);
+                          const hasSubs = subs.length > 0;
+                          return (
+                            <li 
+                              key={cat._id} 
+                              className={`dropdown-list-item ${hasSubs ? 'has-subs' : ''}`}
+                              onMouseEnter={() => setActiveCategoryHover(cat._id)}
+                              onMouseLeave={() => setActiveCategoryHover(null)}
+                            >
+                              <Link to={`/products?category=${cat._id}`} className="dropdown-link">
+                                {cat.name} {hasSubs && <span className="sub-arrow">›</span>}
+                              </Link>
+                              
+                              {hasSubs && (
+                                <div className={`sub-dropdown-menu ${activeCategoryHover === cat._id ? 'show' : ''}`}>
+                                  <ul className="dropdown-list">
+                                    {subs.map(sub => (
+                                      <li key={sub._id} className="dropdown-list-item">
+                                        <Link to={`/products?category=${cat._id}&subcategory=${sub._id}`} className="dropdown-link">
+                                          {sub.name}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </li>
+                );
+              }
+
+              return (
+                <li key={label} className="nav-item-wrapper">
+                  <NavLink
+                    to={to}
+                    end={end}
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
@@ -93,29 +175,68 @@ export default function Header() {
       {/* Mobile slide-in nav */}
       <nav className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}>
         <ul>
-          {allNav.map(({ to, label, end, isButton }) => (
-            <li key={label}>
-              {isButton ? (
-                <NavLink
-                  to={to}
-                  className="btn-primary"
-                  onClick={closeMobileMenu}
-                  style={{ display: 'inline-flex', marginTop: '1rem' }}
-                >
-                  {label}
-                </NavLink>
-              ) : (
-                <NavLink
-                  to={to}
-                  end={end}
-                  className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                  onClick={closeMobileMenu}
-                >
-                  {label}
-                </NavLink>
-              )}
-            </li>
-          ))}
+          {allNav.map(({ to, label, end, isButton }) => {
+            if (label === 'Products') {
+              return (
+                <li key={label} className="mobile-dropdown-container">
+                  <NavLink
+                    to={to}
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileMenu}
+                  >
+                    {label}
+                  </NavLink>
+                  <ul className="mobile-sub-menu">
+                    {categories.map(cat => {
+                      const subs = getSubcategories(cat._id);
+                      return (
+                        <li key={cat._id}>
+                          <Link to={`/products?category=${cat._id}`} className="mobile-sub-link" onClick={closeMobileMenu}>
+                            - {cat.name}
+                          </Link>
+                          {subs.length > 0 && (
+                            <ul className="mobile-nested-sub-menu">
+                              {subs.map(sub => (
+                                <li key={sub._id}>
+                                  <Link to={`/products?category=${cat._id}&subcategory=${sub._id}`} className="mobile-nested-sub-link" onClick={closeMobileMenu}>
+                                    -- {sub.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              );
+            }
+
+            return (
+              <li key={label}>
+                {isButton ? (
+                  <NavLink
+                    to={to}
+                    className="btn-primary"
+                    onClick={closeMobileMenu}
+                    style={{ display: 'inline-flex', marginTop: '1rem' }}
+                  >
+                    {label}
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    to={to}
+                    end={end}
+                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                    onClick={closeMobileMenu}
+                  >
+                    {label}
+                  </NavLink>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </nav>
     </header>

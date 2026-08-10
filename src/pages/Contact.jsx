@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Phone, Mail, Check } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 export default function Contact() {
@@ -9,6 +10,9 @@ export default function Contact() {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const formRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,7 +20,29 @@ export default function Contact() {
       alert('Please fill in the required fields.');
       return;
     }
-    setSuccess(true);
+
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      alert("EmailJS configuration is missing in the .env file! Message could not be sent.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    emailjs.sendForm(serviceId, templateId, formRef.current, publicKey)
+      .then((result) => {
+          console.log(result.text);
+          setSuccess(true);
+      }, (error) => {
+          console.error(error.text);
+          alert("Failed to send message. Please try again later.");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   };
 
   const handleReset = () => {
@@ -90,6 +116,7 @@ export default function Contact() {
               {!success ? (
                 <motion.form 
                   key="form"
+                  ref={formRef}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -99,6 +126,7 @@ export default function Contact() {
                     <label>Full Name *</label>
                     <input
                       type="text"
+                      name="user_name"
                       required
                       placeholder="Your Name"
                       value={name}
@@ -111,6 +139,7 @@ export default function Contact() {
                     <label>Email Address *</label>
                     <input
                       type="email"
+                      name="user_email"
                       required
                       placeholder="name@company.com"
                       value={email}
@@ -123,6 +152,7 @@ export default function Contact() {
                     <label>Subject</label>
                     <input
                       type="text"
+                      name="subject"
                       placeholder="e.g. Project RFQ"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
@@ -134,6 +164,7 @@ export default function Contact() {
                     <label>Message *</label>
                     <textarea
                       required
+                      name="message"
                       rows="5"
                       placeholder="Tell us about your project lighting requirements..."
                       value={message}
@@ -143,8 +174,8 @@ export default function Contact() {
                     />
                   </div>
 
-                  <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }}>
-                    Send Message
+                  <button type="submit" className="btn-primary" disabled={isSubmitting} style={{ width: '100%', justifyContent: 'center', marginTop: '1rem' }}>
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </button>
                 </motion.form>
               ) : (
