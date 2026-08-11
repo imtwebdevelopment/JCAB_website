@@ -70,7 +70,6 @@ export default function Spaces() {
               <div className="space-text">
                 <h2>{space.title}</h2>
                 <p>{space.desc}</p>
-                <p>Our Architectural Lighting Poles are more than just street-lights—they’re the sculptors of ambiance and elegance. Designed to harmonize with the architecture around them, these poles ensure a seamless aesthetic that elevates the entire project. Whether it’s creating a premium feel for luxury spaces or maintaining a uniform design language across sprawling developments, our poles adapt flawlessly to your vision.</p>
               </div>
               <div className="space-img-wrapper">
                 <img src={space.img} alt={space.title} className="space-img" loading={idx > 0 ? "lazy" : "eager"} />
