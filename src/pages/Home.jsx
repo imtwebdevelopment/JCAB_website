@@ -84,7 +84,7 @@ export default function Home() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.35 }}
           >
             Premium Architectural<br />
-            <span className="hero-title-accent">Lighting Poles</span>
+            <span className="hero-title-accent">Lighting Poles <span style={{ fontFamily: 'Arial, sans-serif' }}>&amp;</span><br />Cables</span>
           </motion.h1>
 
           <motion.p
