@@ -107,10 +107,10 @@ export default function Products() {
     const subObj = subcategories.find(s => s._id === subcatId || s.name === subcatId);
     if (subObj) {
       setActiveSubcategory(subObj.name);
-      
+
       const catObj = categories.find(c => c.id === activeCategory || c.label === activeCategory);
       const catSlug = (catObj && catObj.id !== 'all') ? encodeURIComponent(catObj.label.replace(/\s+/g, '-')) : 'all';
-      
+
       navigate(`/${catSlug}/${encodeURIComponent(subObj.name.replace(/\s+/g, '-'))}`);
     } else {
       setActiveSubcategory(subcatId);
@@ -180,7 +180,6 @@ export default function Products() {
             {/* Intro Section with Hero Image */}
             <div className="dinamo-hero" style={{ backgroundImage: 'url("/images/hero_poles_1786361776963.png")' }}>
               <div className="dinamo-hero-content">
-                <div className="red-dot"></div>
                 <h1>Our Products</h1>
                 <p className="hero-subtitle">
                   State-of-the-art facility in Raipur combining precision engineering with sustainable manufacturing practices.
@@ -221,7 +220,6 @@ export default function Products() {
             {/* Dinamoo Style Hero */}
             <div className="dinamo-hero" style={{ backgroundImage: getBannerImage() }}>
               <div className="dinamo-hero-content">
-                <div className="red-dot"></div>
                 <h1>{titleText}</h1>
                 <p className="hero-subtitle">
                   {getSubtitle(activeSubcatObj?.name)}

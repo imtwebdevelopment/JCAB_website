@@ -23,6 +23,7 @@ const allNav = [...navLeft, ...navRight];
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
   const [productsHover, setProductsHover] = useState(false);
@@ -54,11 +55,15 @@ export default function Header() {
     fetchData();
   }, [API_URL]);
 
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileProductsOpen(false);
+    document.body.style.overflow = 'unset';
+  };
 
   // Helper to get subs for a cat
   const getSubcategories = (catId) => {
-    return subcategories.filter(sub => 
+    return subcategories.filter(sub =>
       (sub.parentCategory?._id || sub.parentCategory) === catId
     );
   };
@@ -73,8 +78,8 @@ export default function Header() {
             {navLeft.map(({ to, label, end }) => {
               if (label === 'Products') {
                 return (
-                  <li 
-                    key={label} 
+                  <li
+                    key={label}
                     className="nav-item-wrapper dropdown-wrapper"
                     onMouseEnter={() => setProductsHover(true)}
                     onMouseLeave={() => { setProductsHover(false); setActiveCategoryHover(null); }}
@@ -88,8 +93,8 @@ export default function Header() {
                           const subs = getSubcategories(cat._id);
                           const hasSubs = subs.length > 0;
                           return (
-                            <li 
-                              key={cat._id} 
+                            <li
+                              key={cat._id}
                               className={`dropdown-list-item ${hasSubs ? 'has-subs' : ''}`}
                               onMouseEnter={() => setActiveCategoryHover(cat._id)}
                               onMouseLeave={() => setActiveCategoryHover(null)}
@@ -97,7 +102,7 @@ export default function Header() {
                               <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} className="dropdown-link">
                                 {cat.name} {hasSubs && <span className="sub-arrow">›</span>}
                               </Link>
-                              
+
                               {hasSubs && (
                                 <div className={`sub-dropdown-menu ${activeCategoryHover === cat._id ? 'show' : ''}`}>
                                   <ul className="dropdown-list">
@@ -179,36 +184,48 @@ export default function Header() {
             if (label === 'Products') {
               return (
                 <li key={label} className="mobile-dropdown-container">
-                  <NavLink
-                    to={to}
-                    className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                    onClick={closeMobileMenu}
+                  <div 
+                    className="nav-item" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileProductsOpen(!mobileProductsOpen);
+                    }}
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', width: '100%' }}
                   >
-                    {label}
-                  </NavLink>
-                  <ul className="mobile-sub-menu">
-                    {categories.map(cat => {
-                      const subs = getSubcategories(cat._id);
-                      return (
-                        <li key={cat._id}>
-                          <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} className="mobile-sub-link" onClick={closeMobileMenu}>
-                            - {cat.name}
-                          </Link>
-                          {subs.length > 0 && (
-                            <ul className="mobile-nested-sub-menu">
-                              {subs.map(sub => (
-                                <li key={sub._id}>
-                                  <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}/${encodeURIComponent(sub.name.replace(/\s+/g, '-'))}`} className="mobile-nested-sub-link" onClick={closeMobileMenu}>
-                                    -- {sub.name}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
+                    <span>{label}</span>
+                    <span style={{ 
+                      fontSize: '0.8rem', 
+                      transform: mobileProductsOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
+                      transition: 'transform 0.3s' 
+                    }}>
+                      ▼
+                    </span>
+                  </div>
+                  {mobileProductsOpen && (
+                    <ul className="mobile-sub-menu">
+                      {categories.map(cat => {
+                        const subs = getSubcategories(cat._id);
+                        return (
+                          <li key={cat._id}>
+                            <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} className="mobile-sub-link" onClick={closeMobileMenu}>
+                              - {cat.name}
+                            </Link>
+                            {subs.length > 0 && (
+                              <ul className="mobile-nested-sub-menu">
+                                {subs.map(sub => (
+                                  <li key={sub._id}>
+                                    <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}/${encodeURIComponent(sub.name.replace(/\s+/g, '-'))}`} className="mobile-nested-sub-link" onClick={closeMobileMenu}>
+                                      -- {sub.name}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </li>
               );
             }

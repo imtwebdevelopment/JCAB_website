@@ -42,7 +42,8 @@
   height: 75px;
   width: auto;
   object-fit: contain;
-  mix-blend-mode: screen; /* Makes the black background of the logo transparent */
+  mix-blend-mode: screen;
+  /* Makes the black background of the logo transparent */
   transition: height 0.3s ease;
 }
 
