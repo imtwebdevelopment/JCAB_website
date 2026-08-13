@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Linkedin, ArrowUp } from 'lucide-react';
 import logoImg from '../assets/logo.png';
 import './Footer.css';
 
 export default function Footer() {
+  const [subcategories, setSubcategories] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/subcategories`);
+        if (res.ok) {
+          const data = await res.json();
+          setSubcategories(data);
+        }
+      } catch (error) {
+        console.error('Error fetching subcategories for footer:', error);
+      }
+    };
+    fetchSubcategories();
+  }, [API_URL]);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -52,12 +70,17 @@ export default function Footer() {
           <div className="footer-column">
             <h6>Categories</h6>
             <ul className="footer-links">
-              <li><Link to="/products?category=architectural">Architectural Poles</Link></li>
-              <li><Link to="/products?category=commercial">Commercial Poles</Link></li>
-              <li><Link to="/products?category=brackets">Custom Brackets</Link></li>
-              <li><Link to="/products?category=lamps">Head Lamps</Link></li>
-              <li><Link to="/products?category=bollards">Bollards</Link></li>
-              <li><Link to="/products?category=cast-iron">Cast Iron Series</Link></li>
+              {subcategories.length > 0 ? (
+                subcategories.map((subcat) => (
+                  <li key={subcat._id}>
+                    <Link to={`/${encodeURIComponent(subcat.name.replace(/\s+/g, '-'))}`}>
+                      {subcat.name}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li>Loading categories...</li>
+              )}
             </ul>
           </div>
 
@@ -78,7 +101,7 @@ export default function Footer() {
               <div className="contact-block">
                 <h6>Business Inquiries</h6>
                 <p>Contact: <a href="tel:+917204301107">+91 7204301107</a></p>
-                <p>E-Mail: <a href="mailto:marudharelectricals11@gmail.com">marudharelectricals11@gmail.com</a></p>
+                <p>E-Mail: <a href="mailto:info@jcabelectricals.com">info@jcabelectricals.com</a></p>
               </div>
 
             </div>
@@ -87,7 +110,7 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <p>© 2026 JCAB. All Rights Reserved. Manufactured & Distributed by Marudhar Electricals.</p>
-          <p>Designed with Precision.</p>
+          <p>Developed by Innomatrics Technologies</p>
         </div>
 
         {/* Back to top widget */}

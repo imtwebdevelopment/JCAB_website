@@ -52,6 +52,9 @@ export default function App() {
             <Route path="/blogs" element={<ComingSoon title="Blogs" />} />
             <Route path="/events" element={<ComingSoon title="Events" />} />
             <Route path="/contact" element={<Contact />} />
+            {/* Dynamic routes for clean URLs like /Architectural and /Architectural/Poles */}
+            <Route path="/:categoryName" element={<Products />} />
+            <Route path="/:categoryName/:subcategoryName" element={<Products />} />
           </Routes>
         </main>
 

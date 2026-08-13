@@ -11,7 +11,7 @@ export default function Contact() {
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const formRef = useRef();
 
   const handleSubmit = (e) => {
@@ -34,11 +34,11 @@ export default function Contact() {
 
     emailjs.sendForm(serviceId, templateId, formRef.current, publicKey)
       .then((result) => {
-          console.log(result.text);
-          setSuccess(true);
+        console.log(result.text);
+        setSuccess(true);
       }, (error) => {
-          console.error(error.text);
-          alert("Failed to send message. Please try again later.");
+        console.error(error.text);
+        alert("Failed to send message. Please try again later.");
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -101,7 +101,7 @@ export default function Contact() {
                 <div className="contact-detail-item">
                   <span className="contact-detail-lbl">E-Mail Address</span>
                   <span className="contact-detail-val">
-                    <a href="mailto:marudharelectricals11@gmail.com">marudharelectricals11@gmail.com</a>
+                    <a href="mailto:info@jcabelectricals.com">info@jcabelectricals.com</a>
                   </span>
                 </div>
               </div>
@@ -111,10 +111,10 @@ export default function Contact() {
           {/* Form Panel */}
           <div className="contact-form-panel">
             <h3>Send Message</h3>
-            
+
             <AnimatePresence mode="wait">
               {!success ? (
-                <motion.form 
+                <motion.form
                   key="form"
                   ref={formRef}
                   initial={{ opacity: 0 }}
@@ -179,7 +179,7 @@ export default function Contact() {
                   </button>
                 </motion.form>
               ) : (
-                <motion.div 
+                <motion.div
                   key="success"
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
@@ -203,10 +203,10 @@ export default function Contact() {
           <MapPin size={32} style={{ color: 'var(--accent-gold)' }} />
           <h3>Visit Our Facility</h3>
           <p>Ground Floor No 54 4th Main 4th Cross Near Rudhrappa Garden, Mysore Road, Bengaluru</p>
-          <a 
-            href="https://maps.google.com/?q=Rudhrappa+Garden+Mysore+Road+Bengaluru" 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <a
+            href="https://maps.google.com/?q=Rudhrappa+Garden+Mysore+Road+Bengaluru"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-secondary"
             style={{ fontSize: '0.85rem' }}
           >

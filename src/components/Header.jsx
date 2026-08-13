@@ -94,7 +94,7 @@ export default function Header() {
                               onMouseEnter={() => setActiveCategoryHover(cat._id)}
                               onMouseLeave={() => setActiveCategoryHover(null)}
                             >
-                              <Link to={`/products?category=${cat._id}`} className="dropdown-link">
+                              <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} className="dropdown-link">
                                 {cat.name} {hasSubs && <span className="sub-arrow">›</span>}
                               </Link>
                               
@@ -103,7 +103,7 @@ export default function Header() {
                                   <ul className="dropdown-list">
                                     {subs.map(sub => (
                                       <li key={sub._id} className="dropdown-list-item">
-                                        <Link to={`/products?category=${cat._id}&subcategory=${sub._id}`} className="dropdown-link">
+                                        <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}/${encodeURIComponent(sub.name.replace(/\s+/g, '-'))}`} className="dropdown-link">
                                           {sub.name}
                                         </Link>
                                       </li>
@@ -191,14 +191,14 @@ export default function Header() {
                       const subs = getSubcategories(cat._id);
                       return (
                         <li key={cat._id}>
-                          <Link to={`/products?category=${cat._id}`} className="mobile-sub-link" onClick={closeMobileMenu}>
+                          <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}`} className="mobile-sub-link" onClick={closeMobileMenu}>
                             - {cat.name}
                           </Link>
                           {subs.length > 0 && (
                             <ul className="mobile-nested-sub-menu">
                               {subs.map(sub => (
                                 <li key={sub._id}>
-                                  <Link to={`/products?category=${cat._id}&subcategory=${sub._id}`} className="mobile-nested-sub-link" onClick={closeMobileMenu}>
+                                  <Link to={`/${encodeURIComponent(cat.name.replace(/\s+/g, '-'))}/${encodeURIComponent(sub.name.replace(/\s+/g, '-'))}`} className="mobile-nested-sub-link" onClick={closeMobileMenu}>
                                     -- {sub.name}
                                   </Link>
                                 </li>

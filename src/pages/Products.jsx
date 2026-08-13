@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Sliders, ArrowRight } from 'lucide-react';
 import PoleSvg from '../components/PoleSvg';
@@ -8,11 +8,8 @@ import './Products.css';
 export default function Products() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const categoryParam = searchParams.get('category') || 'all';
-  const subcategoryParam = searchParams.get('subcategory') || 'all';
-
-  const [activeCategory, setActiveCategory] = useState(categoryParam);
-  const [activeSubcategory, setActiveSubcategory] = useState(subcategoryParam);
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeSubcategory, setActiveSubcategory] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [categories, setCategories] = useState([{ id: 'all', label: 'All Series' }]);
   const [subcategories, setSubcategories] = useState([]);
@@ -21,10 +18,37 @@ export default function Products() {
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+  const { categoryName, subcategoryName } = useParams();
+
   useEffect(() => {
-    setActiveCategory(categoryParam);
-    setActiveSubcategory(subcategoryParam);
-  }, [categoryParam, subcategoryParam]);
+    if (categories.length <= 1 && subcategories.length === 0) return; // wait for data to resolve correctly
+
+    let newActiveCat = 'all';
+    let newActiveSub = 'all';
+
+    const decodedCat = categoryName ? decodeURIComponent(categoryName).replace(/-/g, ' ') : null;
+    const decodedSub = subcategoryName ? decodeURIComponent(subcategoryName).replace(/-/g, ' ') : null;
+
+    if (decodedCat) {
+      // Check if it's a subcategory (like /Architectural-Pole-Lights)
+      const isSubcategory = subcategories.some(s => s.name.toLowerCase() === decodedCat.toLowerCase());
+      const isCategory = categories.some(c => c.label.toLowerCase() === decodedCat.toLowerCase());
+
+      if (isSubcategory && !isCategory) {
+        newActiveCat = 'all';
+        newActiveSub = decodedCat;
+      } else {
+        newActiveCat = decodedCat;
+        newActiveSub = decodedSub || 'all';
+      }
+    } else {
+      newActiveCat = searchParams.get('category') ? searchParams.get('category').replace(/-/g, ' ') : 'all';
+      newActiveSub = searchParams.get('subcategory') ? searchParams.get('subcategory').replace(/-/g, ' ') : 'all';
+    }
+
+    setActiveCategory(newActiveCat);
+    setActiveSubcategory(newActiveSub);
+  }, [categoryName, subcategoryName, searchParams, categories, subcategories]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,20 +97,32 @@ export default function Products() {
     fetchData();
   }, [API_URL]);
 
-  const handleFilterChange = (cat) => {
-    setActiveCategory(cat);
+  const handleFilterChange = (catName) => {
+    setActiveCategory(catName);
     setActiveSubcategory('all');
-    navigate(`/products?category=${cat}`);
+    navigate(`/${encodeURIComponent(catName.replace(/\s+/g, '-'))}`);
   };
 
   const handleSubcatChange = (subcatId) => {
-    setActiveSubcategory(subcatId);
-    navigate(`/products?category=${activeCategory}&subcategory=${subcatId}`);
+    const subObj = subcategories.find(s => s._id === subcatId || s.name === subcatId);
+    if (subObj) {
+      setActiveSubcategory(subObj.name);
+      
+      const catObj = categories.find(c => c.id === activeCategory || c.label === activeCategory);
+      const catSlug = (catObj && catObj.id !== 'all') ? encodeURIComponent(catObj.label.replace(/\s+/g, '-')) : 'all';
+      
+      navigate(`/${catSlug}/${encodeURIComponent(subObj.name.replace(/\s+/g, '-'))}`);
+    } else {
+      setActiveSubcategory(subcatId);
+      navigate(`/products?category=${activeCategory}&subcategory=${subcatId}`);
+    }
   };
 
   const filteredProducts = productsData.filter(p => {
-    const matchCat = activeCategory === 'all' || p.cat === activeCategory;
-    const matchSubcat = activeSubcategory === 'all' || p.subcat === activeSubcategory;
+    const activeCatId = activeCategory === 'all' ? 'all' : (categories.find(c => c.id === activeCategory || c.label === activeCategory)?.id || activeCategory);
+    const activeSubcatId = activeSubcategory === 'all' ? 'all' : (subcategories.find(s => s._id === activeSubcategory || s.name === activeSubcategory)?._id || activeSubcategory);
+    const matchCat = activeCatId === 'all' || p.cat === activeCatId;
+    const matchSubcat = activeSubcatId === 'all' || p.subcat === activeSubcatId;
     return matchCat && matchSubcat;
   });
 
@@ -102,8 +138,8 @@ export default function Products() {
     navigate(`/bespoke-poles?model=${code}`);
   };
 
-  const activeSubcatObj = subcategories.find(s => s._id === activeSubcategory);
-  const titleText = activeSubcatObj ? activeSubcatObj.name : (activeCategory === 'all' ? 'Our Collection' : categories.find(c => c.id === activeCategory)?.label || 'Products');
+  const activeSubcatObj = subcategories.find(s => s._id === activeSubcategory || s.name === activeSubcategory);
+  const titleText = activeSubcatObj ? activeSubcatObj.name : (activeCategory === 'all' ? 'Our Collection' : (categories.find(c => c.id === activeCategory || c.label === activeCategory)?.label || activeCategory || 'Products'));
   const descText = activeSubcatObj?.description || "Explore our premium architectural, commercial, and utility lighting poles. They shape the way a space feels and lift the mood of any project.";
 
   // Map subcategory names to different banner images
@@ -165,7 +201,7 @@ export default function Products() {
                     <div className={`catalog-center-content ${isDark ? 'text-light' : 'text-dark'}`}>
                       <h2>{sub.name}</h2>
                       <p>{sub.description}</p>
-                      <button 
+                      <button
                         className={`btn-primary ${isDark ? 'btn-outline-light' : ''}`}
                         onClick={() => handleSubcatChange(sub._id)}
                       >
@@ -201,43 +237,43 @@ export default function Products() {
               layout
               className="products-grid"
             >
-            {loading ? (
-              <div style={{ padding: '2rem', textAlign: 'center', width: '100%' }}>Loading products...</div>
-            ) : (
-              <AnimatePresence mode="popLayout">
-                {filteredProducts.map(prod => (
-                  <motion.div
-                    key={prod.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.4 }}
-                    className="product-card"
-                  >
-                    <div className="product-card-visual">
-                      {prod.image ? (
-                        <img
-                          src={prod.image.startsWith('http') || prod.image.startsWith('data:') ? prod.image : `${API_URL}${prod.image}`}
-                          alt={prod.name}
-                          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                        />
-                      ) : (
-                        <PoleSvg model={prod.code || prod.name} />
-                      )}
-                    </div>
-                    <div className="product-card-content">
-                      <div className="product-card-meta">
-                        <h3 className="product-card-name">{prod.name}</h3>
-                        <p className="product-card-desc" style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>{prod.desc}</p>
+              {loading ? (
+                <div style={{ padding: '2rem', textAlign: 'center', width: '100%' }}>Loading products...</div>
+              ) : (
+                <AnimatePresence mode="popLayout">
+                  {filteredProducts.map(prod => (
+                    <motion.div
+                      key={prod.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.4 }}
+                      className="product-card"
+                    >
+                      <div className="product-card-visual">
+                        {prod.image ? (
+                          <img
+                            src={prod.image.startsWith('http') || prod.image.startsWith('data:') ? prod.image : `${API_URL}${prod.image}`}
+                            alt={prod.name}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                          />
+                        ) : (
+                          <PoleSvg model={prod.code || prod.name} />
+                        )}
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            )}
-          </motion.div>
-        </>
+                      <div className="product-card-content">
+                        <div className="product-card-meta">
+                          <h3 className="product-card-name">{prod.name}</h3>
+                          <p className="product-card-desc" style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>{prod.desc}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              )}
+            </motion.div>
+          </>
         )}
 
       </div>

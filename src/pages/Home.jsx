@@ -15,7 +15,7 @@ const statsData = [
   { val: '47+', label: 'Pole Models' },
   { val: '19+', label: 'Cities Served' },
   { val: '150+', label: 'Expert Craftsmen' },
-  { val: '1 Lakh', label: 'Sq.Ft Facility' },
+  { val: '5000', label: 'Sq.Ft Facility' },
 ];
 
 const productCategories = [
@@ -24,7 +24,7 @@ const productCategories = [
     tag: 'Category 01',
     title: 'Architectural Light Poles',
     desc: 'Enhance urban aesthetics with architecturally crafted pole lights designed for modern landscapes — combining form, function, and durability.',
-    link: '/products?category=architectural',
+    link: '/Architectural-Light-Poles',
     img: '/home_prod_arch.png',
     align: 'normal',
   },
@@ -33,7 +33,7 @@ const productCategories = [
     tag: 'Category 02',
     title: 'Commercial Poles',
     desc: 'IS-compliant galvanized poles engineered for roads, highways, and industrial estates. Built tough, built to last.',
-    link: '/products?category=commercial',
+    link: '/Commercial-Poles',
     img: '/home_prod_commercial.png',
     align: 'reverse',
   },
@@ -289,7 +289,7 @@ export default function Home() {
             <div className="mfg-stat-row">
               <div className="mfg-stat"><MapPin size={20} /><span>Bengaluru, KA</span></div>
               <div className="mfg-stat"><Users size={20} /><span>150+ Experts</span></div>
-              <div className="mfg-stat"><Maximize2 size={20} /><span>1 Lakh Sq.Ft</span></div>
+              <div className="mfg-stat"><Maximize2 size={20} /><span>5000 Sq.Ft</span></div>
             </div>
             <Link to="/manufacturing" className="btn-secondary" style={{ marginTop: '1.5rem' }}>
               Explore Manufacturing
